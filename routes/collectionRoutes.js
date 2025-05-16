@@ -2,20 +2,25 @@ const express = require('express');
 const router = express.Router();
 const collectionController = require('../controllers/collectionController');
 
-//Récupérer toutes les collections
-router.get('/', collectionController.getAllCollections); // GET /api/collections/
-//Rechercher une collection
+// Récupérer toutes les collections
+router.get('/', collectionController.getAllCollections);
+
+// Rechercher une collection
 router.get('/search', collectionController.searchCollections);
-//Récupérer une collection par ID
-router.get('/:id', collectionController.getCollectionById); // GET /api/collections/:id
 
-//Créer une nouvelle collection
-router.post('/', collectionController.createCollection); // POST /api/collections/
+// Récupérer une collection par ID
+router.get('/:id', collectionController.getCollectionById);
 
-//Mettre à jour une collection existante
-router.put('/:id', collectionController.updateCollection); // PUT /api/collections/:id
+// ✅ Récupérer les livres appartenant à une collection
+router.get('/:id/livres', collectionController.getLivresByCollectionId);
 
-//Supprimer une collection
-router.delete('/:id', collectionController.deleteCollection); // DELETE /api/collections/:id
+// Créer une nouvelle collection
+router.post('/', collectionController.createCollection);
+
+// Mettre à jour une collection existante
+router.put('/:id', collectionController.updateCollection);
+
+// Supprimer une collection
+router.delete('/:id', collectionController.deleteCollection);
 
 module.exports = router;

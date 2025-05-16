@@ -17,7 +17,7 @@ router.post("/commander", authenticate, async (req, res) => {
     const nouvelleCommande = new Commande({
       utilisateur: req.user._id,
       livres: panier.map(item => ({
-        livreId: item.livreId,
+        livreId:item.livreId || item._id,
         titre: item.titre,
         prix: item.prix,
         quantite: item.quantite
