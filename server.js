@@ -6,15 +6,16 @@ const cors = require('cors');
 const bookRoutes = require('./routes/bookRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const userRoutes = require('./routes/userRoutes');
-const authRoutes = require('./routes/authRoutes'); // Importer tes routes d'authentification
+const authRoutes = require('./routes/authRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:3000',  // Allow only requests from React frontend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed methods
-  credentials: true,  // Allow cookies, authorization headers, etc.
+  origin: 'http://localhost:3000', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true, 
 };
 
 // Middleware
@@ -26,6 +27,8 @@ app.use('/api/books', bookRoutes);
 app.use('/api/collections', collectionRoutes); 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/cart', cartRoutes);
+
 
 // Connexion à MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/gestion_livres', {

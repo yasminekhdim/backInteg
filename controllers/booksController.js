@@ -69,32 +69,25 @@ exports.deleteBook = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la suppression du livre.' });
   }
 };
-//recherche des livre par titre ou auteur 
+
+// Recherche par titre ou auteur
 exports.searchBooks = async (req, res) => {
   try {
-    console.log("je suis dans le controller !");
-    const searchQuery = req.query.q; // Récupère la chaîne de recherche
-    console.log('Requête de recherche reçue :', searchQuery);
-
-    // Vérifie que la chaîne de recherche existe
+    const searchQuery = req.query.q;
     if (!searchQuery) {
       return res.status(400).json({ message: 'Le paramètre de recherche est requis.' });
     }
 
-    // Recherche les livres contenant la chaîne recherchée (insensible à la casse)
     const books = await Book.find({
       $or: [
-        { titre: { $regex: searchQuery, $options: 'i' } },  // Recherche dans le titre
-        { auteur: { $regex: searchQuery, $options: 'i' } }  // Recherche dans l'auteur
+        { titre: { $regex: searchQuery, $options: 'i' } },
+        { auteur: { $regex: searchQuery, $options: 'i' } }
       ]
     });
 
-    // Retourne les résultats sous forme de JSON
     res.json(books);
   } catch (error) {
-    console.error("Erreur lors de la recherche :", error); // Log de l'erreur
+    console.error('Erreur lors de la recherche :', error);
     res.status(500).json({ message: 'Erreur lors de la recherche des livres.' });
   }
 };
-
-

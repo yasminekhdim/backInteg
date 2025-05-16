@@ -1,4 +1,5 @@
 const Collection = require('../models/collection');
+const Livre = require('../models/book'); // ← Import du modèle Livre
 
 // Récupérer toutes les collections
 exports.getAllCollections = async (req, res) => {
@@ -25,12 +26,23 @@ exports.getCollectionById = async (req, res) => {
   }
 };
 
-// Ajouter une nouvelle collection
+// ✅ Récupérer tous les livres d'une collection
+exports.getLivresByCollectionId = async (req, res) => {
+  try {
+    const livres = await Livre.find({ collectionRef: req.params.id });
+    res.json(livres);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la récupération des livres de la collection.' });
+  }
+};
+
+// Créer une nouvelle collection
 exports.createCollection = async (req, res) => {
   try {
     const { nom, description } = req.body;
 
-    // Vérification si le nom de la collection existe déjà
+    // Vérification si le nom existe déjà
     const existingCollection = await Collection.findOne({ nom });
     if (existingCollection) {
       return res.status(400).json({ message: 'Le nom de la collection existe déjà.' });
@@ -77,8 +89,8 @@ exports.deleteCollection = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la suppression de la collection.' });
   }
 };
-//Search dans la collection
-// GET /api/collections/search?q=motCle&categorie=Categorie
+
+// Rechercher des collections (par mot clé et catégorie)
 exports.searchCollections = async (req, res) => {
   try {
     const { q, categorie } = req.query;
